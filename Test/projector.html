@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="js/rcarousel/widget/css/rcarousel.css" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+
+    <script type="text/javascript" src="js/rcarousel/widget/lib/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="js/rcarousel/widget/lib/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="js/rcarousel/widget/lib/jquery.ui.widget.min.js"></script>
+    <script type="text/javascript" src="js/rcarousel/widget/lib/jquery.ui.rcarousel.min.js"></script>
+
+    <script type="text/javascript" src="js/script/slide_window.js"></script>
+
+    <style>
+      .container-fluid {
+        
+      }
+      .mainrow{
+        display: table;
+      }
+      .main_col {
+        background-color: #484848;
+        color: white;
+        float: none;
+        display: table-cell;
+        vertical-align: top;
+      }
+      .photo_div {
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+      .illustration-text {
+        padding-top: 25px;
+        padding-bottom: 25px;
+        font-size: 20px;
+        text-align: center;
+      }
+      .footer {
+        background-color :  black;
+        color            :  white;  
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container-fluid">    
+
+      <div class="row mainrow">
+        <div class="col-sm-4 main_col">
+          <div class="row" style="background-color:black">
+            <h2><center style="color:white">Bulletin</center></h2>
+          </div>
+
+          <div id="carousel1">
+            <div class="row">
+              <div class="col-sm-3"><img src="src/logo01.png"/></div>
+              <div class="col-sm-9">
+                <p class="illustration"><center>Company A</center></p>
+                <div class="progress">
+                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%"></div>
+                </div>
+              </div>    
+            </div>
+
+            <div class="row">
+              <div class="col-sm-3"><img src="src/logo02.png"/></div>
+              <div class="col-sm-9">
+                <p class="illustration"><center>Company B</center></p>
+                <div class="progress">
+                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" style="width: 78%"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-3"><img src="src/logo03.png"/></div>
+              <div class="col-sm-9">
+                <p class="illustration"><center>Company C</center></p>
+                <div class="progress">
+                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-3"><img src="src/logo04.png"/></div>
+              <div class="col-sm-9">
+                <p class="illustration"><center>Company D</center></p>
+                <div class="progress">
+                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="12" aria-valuemin="0" aria-valuemax="100" style="width: 12%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-4 main_col">
+          <div class="row" style="background-color:black">
+            <h2><center style="color:white">SIM Labs</center></h2>
+          </div>
+
+          <div class="photo_div"><img src="src/c2-1.JPG" class="img-responsive"/></div>
+          <div id="carousel2">          
+            <div><img src="src/c2-2.JPG" class="img-responsive"/></div>
+            <div><img src="src/c2-3.JPG" class="img-responsive"/></div>
+            <div><img src="src/c2-4.JPG" class="img-responsive"/></div>
+          </div>
+        </div>
+
+        <div class="col-sm-4 main_col">
+          <div class="row" style="background-color:black">
+            <h2><center style="color:white">Real Time Data</center></h2>
+          </div>
+          
+          <div class="illustration-text">
+            <p>SIM Living Room<br>In Testing</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>Yet another test text...</p>
+    </div>
+
+  </body>
+</html>

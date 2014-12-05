@@ -1,0 +1,497 @@
+<!DOCTYPE>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>Wall Of Power</title>
+
+<script src="resources/js/raphael.2.1.0.min.js"></script>
+<script src="resources/js/justgage.1.0.1.min.android.js"></script>
+<script src="resources/js/dygraph-combined.js"></script>
+<script language="javascript" type="text/javascript" src="js/jquery-1.4.2.min.js"></script> 
+<script language="javascript" type="text/javascript" src="js/jgauge-0.3.0.a3.js"></script> 
+<script language="javascript" type="text/javascript" src="js/jquery.flot.android.js"></script>
+<script language="javascript" type="text/javascript" src="js/jQueryRotate.min.js"></script>
+<script language="javascript" type="text/javascript" src="js/jquery.flot.stack.js"></script>
+<style type="text/css">
+<!--
+body {
+	
+	text-align: center;
+}
+#g1,#g2,#g3,#g4,#g5,#g6 {
+        width:116px; height:80px;
+        display: inline-block;
+	}
+
+#Layer1 {
+	position:absolute;
+	width:600px;
+	height:170px;
+	z-index:5;
+	left: 1014px;
+	top: 145px;
+}
+#Layer2 {
+	position:absolute;
+	width:516px;
+	height:266px;
+	z-index:2;
+	left: 1068px;
+	top: 477px;
+}
+#Layer3 {
+	position:absolute;
+	width:400px;
+	height:115px;
+	z-index:3;
+	left: 942px;
+	top: 15px;
+}
+
+#Layer4 {
+	position:absolute;
+	width:214px;
+	height:389px;
+	z-index:1;
+	left: 1299px;
+	top: 309px;
+}
+#Layer5 {
+	position:absolute;
+	width:200px;
+	height:507px;
+	z-index:0;
+	left: 151px;
+	top: 371px;
+}
+
+#Layer6 {
+	position:absolute;
+	width:200px;
+	height:115px;
+	z-index:7;
+	left: 5px;
+	top: 781px;
+}
+#Layer7 {
+	position:absolute;
+	width:200px;
+	height:115px;
+	z-index:7;
+	left: 1317px;
+	top: 31px;
+	color:#F7FE2E;
+	font-size:80px;
+}
+
+-->
+</style>
+<script>
+var TotalPower = 0;
+var TvPower = 0;
+var LampPower = 0;
+var SpeakerPower = 0;
+var VD1 = 0;
+var VD2 = 0;
+var VD3 = 0;
+var all = 0;
+var RestPower = 0;
+var money = 0;
+var time = 0;
+      window.onload = function(){
+        var g1 = new JustGage({
+          id: "g1", 
+          value: 0, 
+          min: 0,
+          max: 100,
+          title: "Virtual TV",
+          titleFontColor: "#ffffff",
+		  valueFontColor:"#ffffff",
+		  showMinMax: false,   
+          shadowOpacity: 1,
+          shadowSize: 0,
+          shadowVerticalOffset: 5,   
+		});
+	    
+		var g2 = new JustGage({
+          id: "g2", 
+          value: 0,
+		  titleFontColor: "#ffffff",
+		  valueFontColor:"#ffffff",
+          min: 0,
+          max: 100,
+          title: "Virtual STB",
+            shadowOpacity: 1,
+          shadowSize: 0,
+          shadowVerticalOffset: 5,
+		  showMinMax: false,  
+        });
+        
+        var g3 = new JustGage({
+          id: "g3", 
+          value: 0,
+		  titleFontColor: "#ffffff",
+		  valueFontColor:"#ffffff",
+          min: 0,
+          max: 100,
+          title: "Virtual PC",
+          showMinMax: false, 
+          shadowOpacity: 1,
+          shadowSize: 0,
+          shadowVerticalOffset: 5,		  
+        }); 
+		    var g4 = new JustGage({
+          id: "g4", 
+          value: 0,
+		  titleFontColor: "#ffffff",
+		  valueFontColor:"#ffffff",
+          min: 0,
+          max: 100,
+          title: "TV",
+          showMinMax: false, 
+		  shadowOpacity: 1,
+          shadowSize: 0,
+          shadowVerticalOffset: 5,     
+        });
+		    var g5 = new JustGage({
+          id: "g5", 
+          value: 0, 
+		  titleFontColor: "#ffffff",
+		  valueFontColor:"#ffffff",
+          min: 0,
+          max: 100,
+          title: "Lamp",
+          showMinMax: false,  
+		   shadowOpacity: 1,
+          shadowSize: 0,
+          shadowVerticalOffset: 5,   
+        });
+		    var g6 = new JustGage({
+          id: "g6", 
+          value: 0, 
+		  titleFontColor: "#ffffff",
+		  valueFontColor:"#ffffff",
+          min: 0,
+          max: 100,
+           title: "Speaker",
+          showMinMax: false,        
+          shadowOpacity: 1,
+          shadowSize: 0,
+          shadowVerticalOffset: 5,
+		}); 
+		  setInterval(function() {
+      GetVD1Power();
+		  GetVD2Power();
+		  GetVD3Power();
+		  GetTvPower();
+		  GetLampPower();
+		  GetSpeakerPower();
+		  GetRestPower();
+		  GetTotalPower();
+
+		  g1.refresh(VD1);
+      g2.refresh(VD2);
+		  g3.refresh(VD3);
+		  g4.refresh(TvPower);
+		  g5.refresh(LampPower);
+		  g6.refresh(SpeakerPower);
+        }, 2500); 
+		
+      };
+///////////////////
+//flow
+
+$(function () {
+
+    var data = [], totalPoints = 300;
+    var data2 = [];
+		var y = 0;
+
+		var tmin, tmax;
+
+	
+    function getData() {
+		if (data.length > 0)
+            data = data.slice(1);
+			
+        // do a random walk
+
+				PD_all=y;
+       
+        while (data.length < totalPoints) {
+			data.push(all);
+        }
+		
+        // zip the generated y values with the x values
+        var res = [];
+    for(var m = 0; m <= data.length; m++)
+        data2 [m] = data[data.length-m-1];
+		for (var i = 0; i <= data.length; ++i)		
+        res.push([i, data2[i]]);
+		return res;
+    }
+
+    // setup control widget
+    var updateInterval = 50;
+    
+    // setup plot
+    var options = {
+		series: { label: "Total Power (W)", shadowSize: 0, color: '#3ADF00', lines: { show: true, fill: true }},
+        yaxis: { min: 0, max: 300 },
+        xaxis: { show: false},
+
+    };
+    var plot = $.plot($("#placeholder_4"), [ getData() ], options);
+
+    function update() {
+        plot.setData([ getData() ]);
+        // since the axes don't change, we don't need to call plot.setupGrid()
+        plot.draw();
+        
+        setTimeout(update, updateInterval);
+		
+    }
+	update();
+	
+});
+///////////////////////
+//total
+function GetTotalPower(){
+
+	var xmlhttp;
+	var str = 1;
+	if (window.XMLHttpRequest)
+	{
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			TotalPower = xmlhttp.responseText;
+		}
+	}
+		xmlhttp.open("GET","power.php?q="+str,true);
+		xmlhttp.send();
+
+}
+
+///////////////////////////////
+function GetTvPower(){
+
+	var xmlhttp;
+	var str = 2;
+	if (window.XMLHttpRequest)
+	{
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			TvPower = xmlhttp.responseText;
+		}
+	}
+		xmlhttp.open("GET","power.php?q="+str,true);
+		xmlhttp.send();
+}
+////////////////////////////////
+function GetLampPower(){
+
+	var xmlhttp;
+	var str = 3;
+	if (window.XMLHttpRequest)
+	{
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			LampPower = xmlhttp.responseText;
+		}
+	}
+		xmlhttp.open("GET","power.php?q="+str,true);
+		xmlhttp.send();
+}
+////////////////////////////////////
+
+function GetSpeakerPower(){
+
+	var xmlhttp;
+	var str = 16;
+	if (window.XMLHttpRequest)
+	{
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			SpeakerPower = xmlhttp.responseText;
+		}
+	}
+		xmlhttp.open("GET","power.php?q="+str,true);
+		xmlhttp.send();
+}
+
+//////////////////////////////////
+function GetRestPower(){
+
+	var xmlhttp;
+	var str = 6;
+	if (window.XMLHttpRequest)
+	{
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			RestPower = xmlhttp.responseText;
+		}
+	}
+		xmlhttp.open("GET","power.php?q="+str,true);
+		xmlhttp.send();
+}
+///////////////////////////////////
+function GetVD1Power(){
+
+	var xmlhttp;
+	var str = 4;
+	if (window.XMLHttpRequest)
+	{
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			VD1 = xmlhttp.responseText;
+		}
+	}
+		xmlhttp.open("GET","power.php?q="+str,true);
+		xmlhttp.send();
+		if(VD1==1)
+		{
+			VD1 = 60;
+	     	//document.getElementById('soare1').src= "tv_on.png";
+		}
+		else
+		{
+			//document.getElementById('soare1').src= "tv2.png";
+		}
+
+		
+}
+/////////////////////////////////////////////
+function GetVD2Power(){
+
+	var xmlhttp;
+	var str = 5;
+	if (window.XMLHttpRequest)
+	{
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			VD2 = xmlhttp.responseText;
+		}
+	}
+		xmlhttp.open("GET","power.php?q="+str,true);
+		xmlhttp.send();
+		if(VD2==1)
+			VD2 = 14;
+		
+}
+//////////////////////////////////////////////
+function GetVD3Power(){
+
+	var xmlhttp;
+	var str = 17;
+	if (window.XMLHttpRequest)
+	{
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			VD3 = xmlhttp.responseText;
+		}
+	}
+		xmlhttp.open("GET","power.php?q="+str,true);
+		xmlhttp.send();
+		if(VD3==1)
+			{
+				VD3 = 25;
+				//document.getElementById('soare3').src= "laptop_on.png";
+			}
+		else
+		{
+		}
+			//document.getElementById('soare3').src= "laptop2.png";
+		all = (parseInt(TotalPower)+parseInt(VD1)+parseInt(VD2)+parseInt(VD3));
+		//alert(RestPower);
+		money = (parseInt(RestPower)/3600*0.18+parseInt(all)*30*(8*0.2+16*0.16)*0.25/1000).toFixed(2);
+		//alert(money);
+		//alert(all);
+}
+///////////////////////////////////////////
+    </script>
+</head>
+<body bgcolor="#000000">
+<table width="380px" height="180px" border="0">
+    <tr align="center">
+      <td><div id='g1' ></div></td>
+      <td><div id='g2' ></div></td>
+      <td><div id='g3'></div></td>
+    </tr>
+    <tr>
+      <td><div id='g4'></div></td>
+      <td><div id='g5'></div></td>
+      <td><div id='g6'></div></td>
+    </tr>
+  </table>
+<table width="380px" height="180px">
+    <tr>
+      <td align="center"><div id="placeholder_4" style="width:300px;height:200px;"  align="right"></div></td>
+      
+    </tr>
+  </table>
+
+</body>

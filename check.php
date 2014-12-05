@@ -1,0 +1,59 @@
+    <?php  
+    $un=$_POST['username'];  
+    $pw=$_POST['password'];  
+    //connect to the db  
+    $count2 = 0;
+	$user = 'icce';  
+    $pswd = 'icce';  
+    $db = 'wop_booth';  
+    $conn = mysql_connect('192.168.1.138:3306', $user, $pswd);  
+    mysql_select_db($db, $conn); 
+	$query2 = "select * from user_current";
+	$result2 = mysql_query($query2);
+	$count2 = mysql_num_rows($result2);
+	if($count2==0){
+    //run the query to search for the username and password the match  
+    $query = "SELECT * FROM zach_usertable WHERE User_Name = '$un' AND User_Password = '$pw'";
+	
+    $result = mysql_query($query) or die("Unable to verify user because : " . mysql_error()); 
+	
+	$row = mysql_fetch_array($result);
+	$user_id=$row[0];
+	$query3 = "SELECT * FROM zach_userprofile WHERE user_id = '$user_id'";
+	$result3 = mysql_query($query3);
+	$rows = mysql_num_rows($result3);
+   
+          $row2 = mysql_fetch_row($result3);
+				$TV_num = $row2[4];
+ 			   $Fridge_num = $row2[5];
+			   $DestTop_num = $row2[6];
+
+
+				$myFile = "UD1.txt";
+				$fh = fopen($myFile, 'w') or die("can't open file");
+				$stringData = $TV_num;
+				fwrite($fh, $stringData);
+				fclose($fh);
+				
+				$myFile = "UD2.txt";
+				$fh = fopen($myFile, 'w') or die("can't open file");
+				$stringData = $Fridge_num;
+				fwrite($fh, $stringData);
+				fclose($fh);
+				
+				$myFile = "UD3.txt";
+				$fh = fopen($myFile, 'w') or die("can't open file");
+				$stringData = $DestTop_num;
+				fwrite($fh, $stringData);
+				fclose($fh);
+
+
+    //this is where the actual verification happens 
+    if(mysql_num_rows($result) > 0)  
+    echo 1;  // for correct login response  
+    else  
+    echo 0; // for incorrect login response
+	}
+	else
+	echo 0;
+    ?>  

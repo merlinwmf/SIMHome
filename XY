@@ -1,0 +1,7 @@
+function vd1(){
+	$myFile = "VD1_State.txt";
+	$fh = fopen($myFile, 'r');
+	$theData = fread($fh, 1);
+	fclose($fh);
+	return $theData;
+}

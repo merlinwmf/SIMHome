@@ -1,0 +1,33 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <script type="text/javascript">
+            var img=new Array();
+            img[0]="img-1.jpg";
+            img[1]="img-2.jpg";
+            img[2]="img-3.jpg";
+            //图片可以自己增加
+            var index=0;
+            function show(){
+                if(index>2){//图片增加了的话，这里2也要改
+                    index=0;
+                }
+                document.getElementById("images").src=img[index];
+                document.getElementById("images").title="图片"+(index+1);
+                document.write("<div style ='position:absolute; width: 125px;left:"+lpos+";top:"+tpos+"'><a href="+recentarrivals[i].url+"><img src="+recentarrivals[i].image+" height = '185px' width = '120px' alt='image' /></a><br />")
+
+                index++;
+                setTimeout("show()",1000);//1000毫秒是1秒，隔1秒换，2秒就是2000
+            }
+        </script>
+        <title>@title</title>
+    </head>
+    <body onload="show();">
+        <div>
+            <img id="images" src="image-1.jpg" title="图片1" />
+        </div>
+    </body>
+</html>
+
+
+document.write("<span >"+recentarrivals[i].author.fontcolor("#000000")+"<br />"+recentarrivals[i].description.italics()+" </span></div>");
